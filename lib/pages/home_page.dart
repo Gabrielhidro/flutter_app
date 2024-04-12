@@ -60,20 +60,16 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [BotaoNav(
               label: 'Adicionar participante',
-               onpressed: () async {
-                final novoValor = await Navigator.push(context, MaterialPageRoute(builder: (context) => const PageAdd()));
-                if (novoValor != null) {
-                  setCounter(novoValor);
-                }
+               onpressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const PageAdd())).then((value) => setCounter(value));
               },
             ),
             SizedBox(height: 12),
             BotaoNav(
               label: 'Ver lista ',
               onpressed: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context) => const PageList())).then((value) => setCounter(value));
+                Navigator.push(context,MaterialPageRoute(builder: (context) => const PageList()));
               },
-              
             )],
             ),  
           ),

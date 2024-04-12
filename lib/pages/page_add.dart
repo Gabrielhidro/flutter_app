@@ -14,6 +14,7 @@ class PageAdd extends StatefulWidget {
 }
 
 class _PageAddState extends State<PageAdd> {
+  String? errorMessage;
   final TextEditingController nomeCtrl = TextEditingController();
   final TextEditingController periodoCtrl = TextEditingController();
 
@@ -30,26 +31,20 @@ class _PageAddState extends State<PageAdd> {
       });
     });
   }
-  
-  int counter = 0;
-
-  void setCounter(dynamic value) {
-    setState(() {
-      counter = value;
-    });
-  }
 
   void capturar() {
     String valorNome = nomeCtrl.text;
     String valorPeriodo = periodoCtrl.text;
 
     if (valorPeriodo == '' || valorNome == '') {
-      print('Digite um valor :D');
+      setState(() {
+        errorMessage = 'Preencha todos os campos';
+      });
     } else {
       setState(() {
         Aluno newAluno = Aluno(nome: valorNome, periodo: valorPeriodo);
         alunos.add(newAluno);
-        Navigator.pop(context, alunos.length);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
       });
     }
     nomeCtrl.clear();
@@ -102,6 +97,15 @@ class _PageAddState extends State<PageAdd> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 12),
+                  if (errorMessage != null)
+                    Text(
+                      errorMessage!,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
+                      ),
+                    ),
                 ],
               ),
             ),

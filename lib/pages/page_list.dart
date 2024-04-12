@@ -39,6 +39,35 @@ class _PageListState extends State<PageList> {
     });
   }
 
+  void openDialog(BuildContext context, Aluno aluno) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Excluir participante'),
+          content: Text('Deseja excluir o participante ${aluno.nome}?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  alunos.remove(aluno);
+                  alunoRepository.saveAlunosList(alunos);
+                  Navigator.of(context).pop();
+                });
+              },
+              child: const Text('Excluir'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +82,24 @@ class _PageListState extends State<PageList> {
               child: const Text('Lista de participantes',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center),
+            ),
+          ),
+          Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                for (Aluno aluno in alunos)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0), // Ajuste o valor conforme necessário
+                    child: AlunoItem(
+                      nomeAluno: aluno.nome,
+                      periodoAluno: aluno.periodo,
+                      onPressed: () {
+                        openDialog(context, aluno);
+                      },
+                    ),
+                  ),
+              ],
             ),
           ),
           Container(
